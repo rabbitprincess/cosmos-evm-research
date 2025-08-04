@@ -3,8 +3,8 @@
 ## Cosmos EVM 구조
 
 1. server
-실행 방식
-    server CLI를 통해 서버 실행
+- 실행 방식
+    - server CLI를 통해 서버 실행
 동작 모드
     StandAlone: 독립 실행형 EVM 노드
     InProcess: Tendermint 노드 내장 모드, 내부 초기화된 Tendermint 노드와 EVM 모듈 간 ABCI in-process 통신
