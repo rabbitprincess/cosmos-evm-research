@@ -2,16 +2,19 @@
 
 ## Cosmos EVM 구조
 
-1. Server
-Server 실행 cli
-StandAlone 및 InProcess 모드 제공
-InProcess 시 tendermint node 를 내부에 초기화해 evm 모듈과 인라인 통신 (abci inprocess 통신)
+1. server
+실행 방식
+    server CLI를 통해 서버 실행
+동작 모드
+    StandAlone: 독립 실행형 EVM 노드
+    InProcess: Tendermint 노드 내장 모드, 내부 초기화된 Tendermint 노드와 EVM 모듈 간 ABCI in-process 통신
 
 2. Cosmos SDK (x)
 
 x/vm
-내장 EVM 실행 엔진, 상태 저장소로 IAVL 트리 사용
-Keeper 를 자체 StateDB로 말아 evm 의 StateDB interface 와 호환
+    내장 EVM 실행 엔진
+    IAVL 트리 기반 상태 저장소
+    Keeper를 StateDB 인터페이스로 래핑해 EVM 호환성 제공
 
 x/feemarket
 
@@ -21,13 +24,35 @@ x/precisebank
 
 x/ibc
 
+3. Ante
 
-3. Precompiles
+4. Precompiles
+    Precompile 관리: 0x000... 주소에 매핑되는 Cosmos 모듈 함수 제공 가능
 
-Precompile 관리: 0x000... 주소에 매핑되는 Cosmos 모듈 함수 제공 가능
+5. Keeper
+
 
 
 ## Cosmos EVM 트랜잭션 처리 Flow
+
+1. 트랜잭션 수신
+
+2. Mempool 검증:
+    기본 AnteHandler 검증 통과
+    ReCheckTx 단계에서 유효성 재확인
+
+3. 블록 포함: Tendermint 합의로 블록에 포함
+
+4. EVM 실행 준비:
+    Context 생성 (block height, timestamp 등)
+    StateDB 초기화 (IAVL 스냅샷)
+
+5. EVM 실행
+
+6. 상태 커밋 및 이벤트 발생
+
+7. 결과 반환
+
 
 ## go-ethereum (geth) 와의 비교
 State 저장소 : MPT ( Merkle Patricia Trie ) / IAVL ( Immutable AVL Tree )
@@ -50,7 +75,4 @@ evm -> evmd 에의 의존성 삭제하고, 양방향 구조를 evmd -> evm 으�
 evmd 의 go.mod 를 삭제하고 단일 모듈로 test, ante, config, cmd 등의 패키지를 evm 으로 공통화해 단일 모듈로 관리합니다.
 
 ### IVAL MPT 전환
-현재 Cosmos EVM은 IAVL을 사용하고 있지만, MPT로 전환하는 것이 성능 및 호환성 측면에서 유리할 수 있습니다. MPT는 EVM의 최적화 및 발전에 기여하고 있으며, IAVL에 비해 더 나은 성능을 제공할 수 있습니다.
-
-전환을 위해 다음과 같은 단계를 고려할 수 있습니다:
-1. MP
+현재 Cosmos EVM은 IAVL을 사용하고 있지만, MPT로 전환하는 것이 성능 및 호환성 측면에서 유리할 수 있습니다. ( 근거 필요 )
