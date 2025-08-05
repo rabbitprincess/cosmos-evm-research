@@ -9,7 +9,7 @@
         Server : StandAlone / InProcess 모드 실행
         Ante : 트랜잭션 사전 처리기
         PreCompiles : EVM 내에서 호출하는 코스모스 모듈
-        Keeper : 모듈 간 상태 접근, IAVL 기반 저장소 사용
+        Keeper : 모듈 간 상태 접근, 일반적으로 IAVL 기반 저장소 사용
         Cosmos SDK
             erc20 : erc20 토큰 실행 기능 제공
             vm : EVM 호환성 제공, Keeper 를 geth 의 StateDB 로 래핑
