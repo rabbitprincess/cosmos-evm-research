@@ -18,34 +18,27 @@
             ibc : 체인 간 상호운용성
 
 ## 트랜잭션 처리 Flow
-    1. 트랜잭션 수신
+    트랜잭션 수신
+        DeliverTx
+        keeper.EthereumTx
+        keeper.ApplyTransaction
 
-    2. Mempool 검증
-        - 기본 AnteHandler 검증 통과
-        - ReCheckTx 단계에서 유효성 재확인
-
-    3. 블록 포함
-        Tendermint 합의로 블록에 포함
-
-    4. EVM 실행 준비:
-        Context 생성 (block height, timestamp 등)
-        StateDB 초기화 (IAVL 스냅샷)
-
-    5. EVM 실행
-
-    6. 상태 커밋 및 이벤트 발생
-
-    7. 결과 반환
+    EVM 실행:
+        ctx 로 EVMConfig, TxConfig 생성
+        vm.State 호환되는 자체 StateDB로 vm.EVM 생성
+        evm.Create 또는 evm.Call 을 호출해 실행
+        
+    상태 커밋 및 이벤트 발생
+        EVM 실행 결과를 stateDB 에서 commit
+        수수료 처리 및 이벤트 발생
 
 ## go-ethereum (geth) 와의 비교
-    1. State 저장소
+    State 저장소
         MPT ( Merkle Patricia Trie ) / IAVL ( Immutable AVL Tree )
-    2. Commit 전략
-        Tx-by-Tx 단위 / Block 단위
-    3. EVM 실행
+    EVM 실행
         바이트코드 인터프리터는 동일
 
-    4. Mempool 
+    Mempool 
 
 ## Cosmos EVM 개선안
 
@@ -62,3 +55,7 @@
 
 ### IVAL MPT 전환
     현재 Cosmos EVM은 IAVL을 사용하고 있지만, MPT로 전환하는 것이 성능 및 호환성 측면에서 유리할 수 있음
+
+    tx index 단위로 처리 -> 근데 index 는 안날라오는데 어떻게 조회?
+    그냥 블록 단위로 처리하면 안될까?
+    state transition
