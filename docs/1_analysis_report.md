@@ -15,7 +15,7 @@
             vm : EVM 호환성 제공, Keeper 를 geth 의 StateDB 로 래핑
             feemarket : eip-1559 호환 모드 제공
             presisebank : 이더리움 소수점 정밀도 제공
-            ibc : 체인 간 상호운용성
+            ibc : 체인 간 상호운용성 제공
 
 ## 트랜잭션 처리 Flow
     트랜잭션 수신
